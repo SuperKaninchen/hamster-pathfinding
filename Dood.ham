@@ -1,0 +1,94 @@
+/*class*/class Dood extends Hamster
+{
+	
+	int currentStepIndex = 0;
+	boolean retreating = false;
+	boolean inStorage = false;
+	int storageX = 0;
+	int storageY = 0;
+	int maxGrains = 5;
+	
+	int[] target = {0};
+	int[] start = {0};
+	int[] path = {2, 2, 2};
+	
+    Dood (int x, int y, int d, int n)
+    {
+		
+		super(x, y, d, n);
+		
+	}
+	
+	void moveDood()
+	{
+		
+		String[][] map = FileReader.fileAsString("H:\\Hamster\\hamster-pathfinding\\test3.ter");
+		target = FileScanner.grainPos(map);
+		start = FileScanner.doodPos(map);
+		path = Pathfinder.findPath(start[0], start[1], target[0], target[1], map);
+		for(int i = 1; i < path.length; i++)
+		{
+			switch(path[i])
+			{
+				case 0 :
+					moveNorth();
+					break;
+				case 1 :
+					moveEast();
+					break;
+				case 2 :
+					moveSouth();
+					break;
+				case 3 :
+					moveWest();
+					break;
+				
+			}
+		
+		}
+	
+	}
+	
+	void moveNorth()
+	{
+		
+		while(super.getDirection() != 0)
+			super.turnLeft();
+		super.move();
+		
+	}
+	void moveEast()
+	{
+		
+		while(super.getDirection() != 1)
+			super.turnLeft();
+		super.move();
+		
+	}
+	void moveSouth()
+	{
+		
+		while(super.getDirection() != 2)
+			super.turnLeft();
+		super.move();
+		
+	}
+	void moveWest()
+	{
+		
+		while(super.getDirection() != 3)
+			super.turnLeft();
+		super.move();
+		
+	}
+	
+	void turnRight()
+	{
+		
+		super.turnLeft();
+		super.turnLeft();
+		super.turnLeft();
+		
+	}
+	
+}
