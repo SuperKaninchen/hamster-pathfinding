@@ -19,10 +19,10 @@
 		
 	}
 	
-	void moveDood()
+	void moveDood(String ter)
 	{
 		
-		String[][] map = FileReader.fileAsString("I:\\hamster-pathfinding\\test2.ter");
+		String[][] map = FileReader.fileAsString(ter);
 		target = FileScanner.grainPos(map);
 		start = FileScanner.doodPos(map);
 		path = Pathfinder.findPath(start[0], start[1], target[0], target[1], map);

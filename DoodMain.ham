@@ -3,6 +3,6 @@
 	
 	Dood hamster = new Dood(0, 0, 1, 0);
 	
-	hamster.moveDood();
+	hamster.moveDood("PATH");
 	
 }

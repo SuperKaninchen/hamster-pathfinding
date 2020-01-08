@@ -11,13 +11,6 @@ class Pathfinder extends Hamster
 	
 	static int targetX;
 	static int targetY;
-	static int bestX;
-	static int bestY;
-	
-	static double deltaX;
-	static double deltaY;
-	static double currDist;
-	static double bestDist = 200.0;
 	
 	static boolean done;
 	static String[][] map;
@@ -30,8 +23,6 @@ class Pathfinder extends Hamster
 	static int[][] fCost = new int[99][99];
 	
 	static int[] currentPath;
-	
-	static boolean editing = true;
 	
 	public static int[] findPath(int nposX, int nposY, int ntargetX, int ntargetY, String[][] newMap)
 	{
