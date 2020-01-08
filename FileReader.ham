@@ -25,7 +25,6 @@ class FileReader extends Hamster
 		int[] dimensions = new int[2];
 		dimensions[0] = Integer.parseInt(lines.get(0)) + 0;
 		dimensions[1] = Integer.parseInt(lines.get(1)) + 0;
-		System.out.println("Dimensions 0: " + dimensions[0] + "| dimensions 1: " + dimensions[1]);
 		
 		lines.remove(0);
 		lines.remove(0);
@@ -38,8 +37,6 @@ class FileReader extends Hamster
 		
 		String[] arr = lines.toArray(new String[lines.size()]);
 		
-		System.out.println("starting map output");
-		
 		for(int i = 0; i < arr.length; i++)
 		{
 			
@@ -49,10 +46,8 @@ class FileReader extends Hamster
 				
 				if(strings[j] != null)
 					result[i][j] = strings[j];
-				System.out.print(result[i][j]);
 				
 			}
-			System.out.println("");
 		}
 		
 		return result;

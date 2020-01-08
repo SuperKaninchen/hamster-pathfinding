@@ -5,26 +5,18 @@
 	
 	static int[] grainPos(String[][] map)
 	{
-		
 		for (int i = 0; i < map.length; i++)
 		{
-			
 			for(int j = 0; j < map[i].length; j++)
 			{
-				
-				//System.out.println("i: " + i + "|j: " + j + "|string: " + map[i][j]);
 				if(map[i][j] == null)
 					continue;
 				if(map[i][j].equals("*"))
 				{
-					
-					int[] target = {i, j};
+					int[] target = {j, i};
 					return target;
-					
 				}
-				
 			}
-			
 		}
 		
 		return target;
@@ -44,7 +36,7 @@
 				if(map[i][j].equals(">"))
 				{
 					
-					int[] target = {j, i};
+					int[] target = {i, j};
 					return target;
 					
 				}

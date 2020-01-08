@@ -101,8 +101,6 @@ class Pathfinder extends Hamster
 			}
 			checkX++;
 			
-			System.out.println("bestx: " + bestpos[1] + " | besty: " + bestpos[0]);
-			
 			currX = bestpos[1];
 			currY = bestpos[0];
 			open[currY][currX] = false;
@@ -110,84 +108,7 @@ class Pathfinder extends Hamster
 			
 		}
 		
-		System.out.println("oihasdoiasdoihasd");
-		
-		
-		
-		for(int i = 0; i < parent.length; i++)
-		{
-			
-			for(int j = 0; j < parent[0].length; j++)
-			{
-				
-				System.out.print(parent[i][j]);
-				
-			}
-			System.out.println("");
-		}
-		
-		
-		
-		int reX = currX;
-		int reY = currY;
-		int i = 0;
-		while(!map[reY][reX].equals(">"))
-		{
-			switch(parent[reY][reX])
-			{
-				case 0:
-					reY--;
-					break;
-				case 1:
-					reX++;
-					break;
-				case 2:
-					reY++;
-					break;
-				case 3:
-					reX--;
-					break;	
-			}
-			i++;
-		}
-		int[] reversePath = new int[i];
-		currentPath = new int[i];
-		i = 0;
-		reX = currX;
-		reY = currY;
-		while(!map[reY][reX].equals(">"))
-		{
-			System.out.println("i: " + i + " | reX: " + reX + " | reY: " + reY + " | parent: " + parent[reY][reX]);
-			reversePath[i] = parent[reY][reX];
-			switch(parent[reY][reX])
-			{
-				case 0:
-					reY--;
-					break;
-				case 1:
-					reX++;
-					break;
-				case 2:
-					reY++;
-					break;
-				case 3:
-					reX--;
-					break;	
-			}
-			System.out.println(reversePath[i]);
-			i++;
-		}
-		System.out.println("asdasdasdasdasd: " + reversePath.length);
-		i = 0;
-		int j = 0;
-		for(i = reversePath.length - 1; i > 0; i--)
-		{
-			System.out.println("rev: " + reversePath[i] + " | len: " + currentPath.length);
-			currentPath[j] = reversePathDigit(reversePath[i]);
-			System.out.println("asdddddddddddddddddddddddddddddddddddddddddddddddd");
-			j++;
-			
-		}
+		currentPath = reversePath();
 		
 		return currentPath; //Necessary return
 	}
@@ -198,10 +119,9 @@ class Pathfinder extends Hamster
 		int x = checkX;
 		int y = checkY;
 		
-		if(x >= 0 && y >= 0 && x < 10 && y < 10 && !map[y][x].equals("#") && !closed[y][x])
+		if(x >= 0 && y >= 0 && x < map[0].length && y < map.length && !map[y][x].equals("#") && !closed[y][x])
 		{
 			parent[y][x] = parent(x, y);
-			System.out.println("x: " + x + "| y: " + y + "| map: " + map[y][x] + " | parent: " + parent[y][x]);
 			
 			switch(parent[y][x])
 			{
@@ -229,7 +149,6 @@ class Pathfinder extends Hamster
 	
 	static int parent(int x, int y)
 	{
-		
 		int best = 77;
 		double bestd = 999.99;
 		double currd = 999.99;
@@ -267,7 +186,6 @@ class Pathfinder extends Hamster
 		}
 		x++;
 		return best;
-		
 	}
 	
 	static int reversePathDigit(int digit)
@@ -292,29 +210,67 @@ class Pathfinder extends Hamster
 		return digit;
 		
 	}
-	
-	static void editArray(int newInt)
+	static int[] reversePath()
 	{
-		if(editing)
-		{
-			int currentSize;
-			if(currentPath != null)
-				currentSize = currentPath.length;
-			else
-				currentSize = 0;
-				
-			int newSize = currentSize + 1;
-			int[] tempArray = new int[newSize];
-			
-			for (int i=0; i < currentSize; i++)
-		   		tempArray[i] = currentPath[i];
-			
-			tempArray[newSize - 1] = newInt;
-			currentPath = tempArray;
-			System.out.println("Added " + newInt + " to path");
-		}
-		editing = false;
 		
-	}
-	    
+		int reX = currX;
+		int reY = currY;
+		int i = 0;
+		
+		while(!map[reY][reX].equals(">"))	//Get Path length
+		{
+			switch(parent[reY][reX])
+			{
+				case 0:
+					reY--;
+					break;
+				case 1:
+					reX++;
+					break;
+				case 2:
+					reY++;
+					break;
+				case 3:
+					reX--;
+					break;	
+			}
+			i++;
+		}
+		
+		int[] reversePath = new int[i];
+		int[] path = new int[i];
+		i = 0;
+		reX = currX;
+		reY = currY;
+		while(!map[reY][reX].equals(">"))	//Write reverse Path to reversePath
+		{
+			reversePath[i] = parent[reY][reX];
+			
+			switch(parent[reY][reX])
+			{
+				case 0:
+					reY--;
+					break;
+				case 1:
+					reX++;
+					break;
+				case 2:
+					reY++;
+					break;
+				case 3:
+					reX--;
+					break;	
+			}
+			i++;
+		}
+		
+		i = 0;
+		for(i = reversePath.length - 1; i > 0; i--)	//Reverse path
+		{
+			path[reversePath.length - (i+1)] = reversePathDigit(reversePath[i]);
+		}
+		
+		return path;
+		
+	}   
 }
