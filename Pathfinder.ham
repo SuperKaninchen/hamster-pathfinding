@@ -6,6 +6,8 @@ class Pathfinder extends Hamster
 	
 	static int currX;
 	static int currY;
+	static int checkX;
+	static int checkY;
 	
 	static int targetX;
 	static int targetY;
@@ -18,14 +20,18 @@ class Pathfinder extends Hamster
 	static double bestDist = 200.0;
 	
 	static boolean done;
+	static String[][] map;
 	
 	static boolean[][] open = new boolean[99][99];
 	static boolean[][] closed = new boolean[99][99];
+	static int[][] parent = new int[99][99];
 	static int[][] gCost = new int[99][99];
 	static int[][] hCost = new int[99][99];
 	static int[][] fCost = new int[99][99];
 	
 	static int[] currentPath;
+	
+	static boolean editing = true;
 	
 	public static int[] findPath(int nposX, int nposY, int ntargetX, int ntargetY, String[][] newMap)
 	{
@@ -36,85 +42,278 @@ class Pathfinder extends Hamster
 			
 		*/
 		
+		
+		map = newMap;
 		currX = nposX;
 		currY = nposY;
+		targetX = ntargetX;
+		targetY = ntargetY;
 		
-		for(int y = 0; y < newMap.length; y++)
+		open[currY][currX] = false;
+		closed[currY][currX] = true;
+		
+		while(!map[currY][currX].equals("*"))
 		{
 			
-			for(int x = 0; x < newMap[0].length; x++)
+			checkX = currX;
+			checkY = currY;
+			int currf = 999;
+			int bestf = 999;
+			int[] bestpos = new int[2];
+			
+			checkY--;
+			currf = check();
+			if(currf < bestf)
+			{
+				bestf = currf;
+				bestpos[0] = checkY;
+				bestpos[1] = checkX;
+			}
+			
+			checkY++;
+			checkX++;
+			currf = check();
+			if(currf < bestf)
+			{
+				bestf = currf;
+				bestpos[0] = checkY;
+				bestpos[1] = checkX;
+			}
+			
+			checkX--;
+			checkY++;
+			currf = check();
+			if(currf < bestf)
+			{
+				bestf = currf;
+				bestpos[0] = checkY;
+				bestpos[1] = checkX;
+			}
+			
+			checkY--;
+			checkX--;
+			currf = check();
+			if(currf < bestf)
+			{
+				bestf = currf;
+				bestpos[0] = checkY;
+				bestpos[1] = checkX;
+			}
+			checkX++;
+			
+			System.out.println("bestx: " + bestpos[1] + " | besty: " + bestpos[0]);
+			
+			currX = bestpos[1];
+			currY = bestpos[0];
+			open[currY][currX] = false;
+			closed[currY][currX] = true;
+			
+		}
+		
+		System.out.println("oihasdoiasdoihasd");
+		
+		
+		
+		for(int i = 0; i < parent.length; i++)
+		{
+			
+			for(int j = 0; j < parent[0].length; j++)
 			{
 				
-				open[y][x] = false; //Set the node to not open
-				closed[y][x] = false; //Set the node to not closed
+				System.out.print(parent[i][j]);
 				
 			}
-			
+			System.out.println("");
 		}
 		
-		open[currX][currY] = true; //Opens first node
 		
-		while(currX != ntargetX || currY != ntargetY)
+		
+		int reX = currX;
+		int reY = currY;
+		int i = 0;
+		while(!map[reY][reX].equals(">"))
 		{
-			
-			for(int i = 0; i < 4; i++) { //For every neighbour	
-				if(i == 0) {	
-					if(currY > 0)
-						currY--;					
-					else	
-						continue;	
-				} else if(i == 1) {	
-					currY++;
-					currX++;
-				} else if(i == 2) {	
-					currX--;
-					currY++;	
-				} else if(i == 3) {	
-					currY--;	
-					if(currX > 0)	
-						currX--;	
-					else	
-						continue;	
-				}
-				
-				if(!newMap[currY][currX].equals("#") && !closed[currY][currX]) //If node is walkable and not closed
-				{
-					
-					gCost[currY][currX] = (int) Math.round(Math.sqrt(Math.abs(nposX - currX) + Math.abs(nposY - currY))); //Get gCost (distance from start)
-					System.out.println("Current gCost: " + gCost[currY][currX]);
-					hCost[currY][currX] = (int) Math.round(Math.sqrt(Math.abs(ntargetX - currX) + Math.abs(ntargetY - currY))); //Get gCost (distance from start)
-					System.out.println("Current hCost: " + hCost[currY][currX]);
-					fCost[currY][currX] = gCost[currY][currX] + hCost[currY][currX];
-					System.out.println("Current fCost: " + fCost[currY][currX]);
-					
-				}
-				
+			switch(parent[reY][reX])
+			{
+				case 0:
+					reY--;
+					break;
+				case 1:
+					reX++;
+					break;
+				case 2:
+					reY++;
+					break;
+				case 3:
+					reX--;
+					break;	
 			}
+			i++;
+		}
+		int[] reversePath = new int[i];
+		currentPath = new int[i];
+		i = 0;
+		reX = currX;
+		reY = currY;
+		while(!map[reY][reX].equals(">"))
+		{
+			System.out.println("i: " + i + " | reX: " + reX + " | reY: " + reY + " | parent: " + parent[reY][reX]);
+			reversePath[i] = parent[reY][reX];
+			switch(parent[reY][reX])
+			{
+				case 0:
+					reY--;
+					break;
+				case 1:
+					reX++;
+					break;
+				case 2:
+					reY++;
+					break;
+				case 3:
+					reX--;
+					break;	
+			}
+			System.out.println(reversePath[i]);
+			i++;
+		}
+		System.out.println("asdasdasdasdasd: " + reversePath.length);
+		i = 0;
+		int j = 0;
+		for(i = reversePath.length - 1; i > 0; i--)
+		{
+			System.out.println("rev: " + reversePath[i] + " | len: " + currentPath.length);
+			currentPath[j] = reversePathDigit(reversePath[i]);
+			System.out.println("asdddddddddddddddddddddddddddddddddddddddddddddddd");
+			j++;
 			
-			
-		
 		}
 		
+		return currentPath; //Necessary return
+	}
+	
+	static int check()
+	{
 		
+		int x = checkX;
+		int y = checkY;
 		
-		return null; //Necessary return
+		if(x >= 0 && y >= 0 && x < 10 && y < 10 && !map[y][x].equals("#") && !closed[y][x])
+		{
+			parent[y][x] = parent(x, y);
+			System.out.println("x: " + x + "| y: " + y + "| map: " + map[y][x] + " | parent: " + parent[y][x]);
+			
+			switch(parent[y][x])
+			{
+				case 0:
+					gCost[y][x] = gCost[y-1][x] + 1;
+					break;
+				case 1:
+					gCost[y][x] = gCost[y][x+1] + 1;
+					break;
+				case 2:
+					gCost[y][x] = gCost[y+1][x] + 1;
+					break;
+				case 3:
+					gCost[y][x] = gCost[y][x-1] + 1;
+					break;	
+			}
+			
+			hCost[y][x] = (int) Math.round(10 * Math.sqrt(Math.abs(targetX - x) + Math.abs(targetY - y)));
+			fCost[y][x] = gCost[y][x] + hCost[y][x];
+			
+			return fCost[y][x];
+		} else
+			return 99999;
+	}
+	
+	static int parent(int x, int y)
+	{
+		
+		int best = 77;
+		double bestd = 999.99;
+		double currd = 999.99;
+			
+		for(int i = 0; i < 4; i++)
+		{
+			switch(i)
+			{
+				case 0:
+					y--;
+					break;
+				case 1:
+					y++;
+					x++;
+					break;
+				case 2:
+					x--;
+					y++;
+					break;
+				case 3:
+					y--;
+					x--;
+					break;	
+			}
+			if(x >= 0 && y >= 0)
+			{
+				if(closed[y][x])
+					currd = gCost[y][x];
+				if(currd < bestd)
+				{
+					bestd = currd;
+					best = i;
+				}
+			}
+		}
+		x++;
+		return best;
+		
+	}
+	
+	static int reversePathDigit(int digit)
+	{
+		
+		switch(digit)
+		{
+			case 0:
+				digit = 2;
+				break;
+			case 1:
+				digit = 3;
+				break;
+			case 2:
+				digit = 0;
+				break;
+			case 3:
+				digit = 1;
+				break;
+		}
+		
+		return digit;
+		
 	}
 	
 	static void editArray(int newInt)
 	{
-		
-		int currentSize;
-		currentSize = currentPath.length;
+		if(editing)
+		{
+			int currentSize;
+			if(currentPath != null)
+				currentSize = currentPath.length;
+			else
+				currentSize = 0;
+				
+			int newSize = currentSize + 1;
+			int[] tempArray = new int[newSize];
 			
-		int newSize = currentSize + 1;
-		int[] tempArray = new int[newSize];
-		
-		for (int i=0; i < currentPath.length; i++)
-	   		tempArray[i] = currentPath[i];
-		
-		tempArray[newSize - 1] = newInt;
-		currentPath = tempArray;
-		System.out.println("added " + newInt + " to path");
+			for (int i=0; i < currentSize; i++)
+		   		tempArray[i] = currentPath[i];
+			
+			tempArray[newSize - 1] = newInt;
+			currentPath = tempArray;
+			System.out.println("Added " + newInt + " to path");
+		}
+		editing = false;
 		
 	}
 	    
