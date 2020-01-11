@@ -35,6 +35,22 @@ class Pathfinder extends Hamster
 		
 		
 		map = newMap;
+		System.out.println("map.length: " + map.length + " | map[0].length: " + map[0].length);
+		System.out.println("map output: \n\n");
+		
+		for(int i = 0; i < map.length; i++)
+		{
+			
+			for(int j = 0; j < map[0].length; j++)
+			{
+				
+				System.out.print(map[i][j]);
+				fCost[i][j] = 99999;
+				
+			}
+			System.out.println("");
+		}
+		
 		currX = nposX;
 		currY = nposY;
 		targetX = ntargetX;
@@ -48,10 +64,11 @@ class Pathfinder extends Hamster
 			
 			checkX = currX;
 			checkY = currY;
-			int currf = 999;
-			int bestf = 999;
 			int[] bestpos = new int[2];
 			
+			int currf = 999;
+			int bestf = 999;
+			
 			checkY--;
 			currf = check();
 			if(currf < bestf)
@@ -59,6 +76,7 @@ class Pathfinder extends Hamster
 				bestf = currf;
 				bestpos[0] = checkY;
 				bestpos[1] = checkX;
+				System.out.println("best " + checkX + ":" + checkY);
 			}
 			
 			checkY++;
@@ -69,6 +87,7 @@ class Pathfinder extends Hamster
 				bestf = currf;
 				bestpos[0] = checkY;
 				bestpos[1] = checkX;
+				System.out.println("best " + checkX + ":" + checkY);
 			}
 			
 			checkX--;
@@ -79,6 +98,7 @@ class Pathfinder extends Hamster
 				bestf = currf;
 				bestpos[0] = checkY;
 				bestpos[1] = checkX;
+				System.out.println("best " + checkX + ":" + checkY);
 			}
 			
 			checkY--;
@@ -89,17 +109,45 @@ class Pathfinder extends Hamster
 				bestf = currf;
 				bestpos[0] = checkY;
 				bestpos[1] = checkX;
+				System.out.println("best " + checkX + ":" + checkY);
 			}
 			checkX++;
+			
+			for(int i = 0; i < fCost.length; i++)
+			{
+				
+				for(int j = 0; j < fCost[0].length; j++)
+				{
+					
+					if(fCost[i][j] < bestf && !closed[i][j] && i >= 0 && j >= 0 && j < map[0].length && i < map.length)
+					{
+						
+						bestf = fCost[i][j];
+						bestpos[0] = i;
+						bestpos[1] = j;
+						
+					}
+					
+				}
+				
+			}
 			
 			currX = bestpos[1];
 			currY = bestpos[0];
+			System.out.println("SET " + currX + ":" + currY + " fcost: " + fCost[currY][currX]);
 			open[currY][currX] = false;
 			closed[currY][currX] = true;
 			
 		}
 		
-		currentPath = reversePath();
+		currentPath = calcPath();
+		
+		for(int i = 0; i < currentPath.length; i++)
+		{
+			
+			System.out.println("PATH[" + i + "]: " + currentPath[i]);
+			
+		}
 		
 		return currentPath; //Necessary return
 	}
@@ -112,7 +160,10 @@ class Pathfinder extends Hamster
 		
 		if(x >= 0 && y >= 0 && x < map[0].length && y < map.length && !map[y][x].equals("#") && !closed[y][x])
 		{
+			
+			System.out.println("currently checking " + x + ":" + y);
 			parent[y][x] = parent(x, y);
+			open[y][x] = true;
 			
 			switch(parent[y][x])
 			{
@@ -134,8 +185,9 @@ class Pathfinder extends Hamster
 			fCost[y][x] = gCost[y][x] + hCost[y][x];
 			
 			return fCost[y][x];
-		} else
-			return 99999;
+		} else{
+			System.out.println("couldnt check " + x + ":" + y);
+			return 99999;}
 	}
 	
 	static int parent(int x, int y)
@@ -201,7 +253,7 @@ class Pathfinder extends Hamster
 		return digit;
 		
 	}
-	static int[] reversePath()
+	static int[] calcPath()
 	{
 		
 		int reX = currX;
@@ -258,7 +310,7 @@ class Pathfinder extends Hamster
 		i = 0;
 		for(i = reversePath.length - 1; i > 0; i--)	//Reverse path
 		{
-			path[reversePath.length - (i+1)] = reversePathDigit(reversePath[i]);
+			path[reversePath.length - (i + 1)] = reversePathDigit(reversePath[i]);
 		}
 		
 		return path;
