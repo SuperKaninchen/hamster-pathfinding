@@ -26,15 +26,10 @@ class FileReader extends Hamster
 		dimensions[1] = Integer.parseInt(lines.get(0)) + 0;
 		dimensions[0] = Integer.parseInt(lines.get(1)) + 0;
 		
-		System.out.println("size: " + lines.size());
-		System.out.println("dim0: " + dimensions[0] + " | dim1: " + dimensions[1]);
-		
 		lines.remove(0);
 		lines.remove(0);
 		for(int i = 0; i < 3; i++)
 			lines.remove(lines.size() - 1);
-			
-		System.out.println("size: " + lines.size());
 		
 		String[][] result = new String[dimensions[0]][dimensions[1]];
 		String[] strings = new String[0];

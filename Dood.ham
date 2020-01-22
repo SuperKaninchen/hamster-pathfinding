@@ -12,20 +12,35 @@
 	int[] start = {0};
 	int[] path = {2, 2, 2};
 	
+	static int verbosityLevel;
+	
     Dood (int x, int y, int d, int n)
     {
-		
 		super(x, y, d, n);
-		
+		verbosityLevel = 3;//super.readNumber("Verbosity level");
+	}
+	static void print(String str, int lvl)
+	{
+		if(lvl <= verbosityLevel)
+			System.out.print(str);
+	}
+	static void println(String str, int lvl)
+	{
+		if(lvl <= verbosityLevel)
+			System.out.println(str);
 	}
 	
 	void moveDood(String ter)
 	{
 		
+		Dood.println("---STARTING FILE READING---", 1);
 		String[][] map = FileReader.fileAsString(ter);
+		Dood.println("---STARTING FILE SCANNING---", 1);
 		target = FileScanner.grainPos(map);
 		start = FileScanner.doodPos(map);
+		Dood.println("---STARTING PATH FINDING---", 1);
 		path = Pathfinder.findPath(start[0], start[1], target[0], target[1], map);
+		Dood.println("---STARTING MOVING---", 1);
 		for(int i = 0; i < path.length; i++)
 		{
 			switch(path[i])
@@ -42,7 +57,6 @@
 				case 3 :
 					moveWest();
 					break;
-				
 			}
 		
 		}
@@ -51,44 +65,34 @@
 	
 	void moveNorth()
 	{
-		
 		while(super.getDirection() != 0)
 			super.turnLeft();
 		super.move();
-		
 	}
 	void moveEast()
 	{
-		
 		while(super.getDirection() != 1)
 			super.turnLeft();
 		super.move();
-		
 	}
 	void moveSouth()
 	{
-		
 		while(super.getDirection() != 2)
 			super.turnLeft();
 		super.move();
-		
 	}
 	void moveWest()
 	{
-		
 		while(super.getDirection() != 3)
 			super.turnLeft();
 		super.move();
-		
 	}
 	
 	void turnRight()
 	{
-		
 		super.turnLeft();
 		super.turnLeft();
 		super.turnLeft();
-		
 	}
 	
 }

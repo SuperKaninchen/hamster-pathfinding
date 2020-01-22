@@ -3,6 +3,6 @@
 	
 	Dood hamster = new Dood(0, 0, 1, 0);
 	
-	hamster.moveDood("PATH");
+	hamster.moveDood("H:\\Java\\test4.ter");
 	
 }
