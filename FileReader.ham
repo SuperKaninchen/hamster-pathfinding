@@ -9,7 +9,7 @@ import java.lang.Object.*;
 import java.lang.Character;
 import java.lang.Character.*;
 
-class FileReader extends Hamster
+class FileReader
 {
 		
 	public static String[][] fileAsString(String filePathString)

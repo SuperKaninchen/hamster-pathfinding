@@ -1,4 +1,4 @@
-/*class*/class FileScanner extends Hamster
+/*class*/class FileScanner
 {
     
     static int[] target = {0, 3};
