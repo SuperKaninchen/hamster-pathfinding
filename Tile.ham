@@ -3,6 +3,8 @@
     public int type;
     public Vector2 pos;
     
+    public int g, h, f;
+    
     public class Vector2 {
     	public int x, y;
     	public Vector2(int pX, int pY) {
@@ -27,6 +29,7 @@
     public Tile(String pChar, int pX, int pY) {
     	type = type(pChar);
     	pos = new Vector2(pX, pY);
+    	
     }
     
 }
