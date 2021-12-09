@@ -1,0 +1,5 @@
+/*imperative program*/void main() {
+    
+    Map map = Map();
+    
+}

@@ -1,0 +1,32 @@
+/*class*/class Tile {
+    
+    public int type;
+    public Vector2 pos;
+    
+    public class Vector2 {
+    	public int x, y;
+    	public Vector2(int pX, int pY) {
+    		x = pX;
+    		y = pY;
+    	}
+    }
+    public static int type(String c) {
+    	switch(c) {
+    		case " ":
+    			return 0;
+    		case "#":
+    			return 1;
+    		case "*":
+    			return 2;
+    		case ">":
+    			return 3;
+    	}
+    	return -1;
+    }
+    
+    public Tile(String pChar, int pX, int pY) {
+    	type = type(pChar);
+    	pos = new Vector2(pX, pY);
+    }
+    
+}

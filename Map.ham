@@ -1,0 +1,56 @@
+/*class*/import java.io.IOException;
+import java.util.*;
+import java.nio.charset.*;
+import java.nio.file.*;
+import java.nio.file.Paths.*;
+import java.lang.*;
+import java.lang.Object.*;
+import java.lang.Character;
+import java.lang.Character.*;
+
+class Map {
+    
+    private Tile[][] tiles;
+    
+    public Map() {
+    
+    }
+    
+    public void readFile(String filePath) {
+    	Path p = Paths.get(filePath);
+		List<String> lines = null;
+		try
+		{
+			lines = Files.readAllLines(p, Charset.forName("UTF-8"));
+		} catch (IOException e){System.out.println("ERROR WHILE READING FILE: " + e);}
+		
+		int[] dimensions = new int[2];
+		dimensions[1] = Integer.parseInt(lines.get(0)) + 0;
+		dimensions[0] = Integer.parseInt(lines.get(1)) + 0;
+		
+		lines.remove(0);
+		lines.remove(0);
+		for(int i = 0; i < 3; i++)
+			lines.remove(lines.size() - 1);
+		
+		tiles = new Tile[dimensions[0]][dimensions[1]];
+		String[] strings = new String[0];
+		
+		String[] arr = lines.toArray(new String[lines.size()]);
+		
+		for(int i = 0; i < arr.length; i++)
+		{
+			
+			strings = arr[i].split("");
+			for(int j = 0; j < strings.length; j++)
+			{
+				String c = strings[j];
+				if(c != null) {
+					Tile t = Tile(c, j, i);
+					tiles[i][j] = t;
+				}				
+			}
+		}
+    }
+    
+}
